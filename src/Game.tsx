@@ -11,7 +11,7 @@ class Square extends React.Component {
 }
 
 class Board extends React.Component {
-  renderSquare(i: number) {
+  renderSquare(i) {
     return <Square />;
   }
 
