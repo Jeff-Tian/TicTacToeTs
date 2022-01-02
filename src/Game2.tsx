@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Square(props: any) {
+function Square(props) {
   return (
     <button className="square" onClick={props.onClick}>
       {props.value}
@@ -9,7 +9,7 @@ function Square(props: any) {
 }
 
 class Board extends React.Component {
-  renderSquare(i: number) {
+  renderSquare(i) {
     return (
       <Square
         value={this.props.squares[i]}
@@ -41,8 +41,8 @@ class Board extends React.Component {
   }
 }
 
-class Game extends React.Component {
-  constructor(props: any) {
+export class Game extends React.Component {
+  constructor(props) {
     super(props);
     this.state = {
       history: [
@@ -55,7 +55,7 @@ class Game extends React.Component {
     };
   }
 
-  handleClick(i: number) {
+  handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
@@ -74,7 +74,7 @@ class Game extends React.Component {
     });
   }
 
-  jumpTo(step: number) {
+  jumpTo(step) {
     this.setState({
       stepNumber: step,
       xIsNext: (step % 2) === 0
@@ -109,7 +109,7 @@ class Game extends React.Component {
         <div className="game-board">
           <Board
             squares={current.squares}
-            onClick={(i: number) => this.handleClick(i)}
+            onClick={i => this.handleClick(i)}
           />
         </div>
         <div className="game-info">
@@ -123,9 +123,9 @@ class Game extends React.Component {
 
 // ========================================
 
-ReactDOM.render(<Game />, document.getElementById("root"));
+// ReactDOM.render(<Game />, document.getElementById("root"));
 
-function calculateWinner(squares: number[]) {
+function calculateWinner(squares) {
   const lines = [
     [0, 1, 2],
     [3, 4, 5],
