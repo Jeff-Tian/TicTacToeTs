@@ -1,6 +1,6 @@
 import * as React from 'react'
 import './App.css'
-import {Game} from './Game2'
+import {Game} from './GameAI'
 
 export default function App() {
   return (
