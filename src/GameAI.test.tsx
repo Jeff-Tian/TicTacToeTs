@@ -1,3 +1,6 @@
-test('adds 1 + 2 to equal 3', () => {
-  expect(1+2).toBe(3);
+import {Game} from "./GameAI";
+
+test('game', () => {
+    const game = new Game({})
+    expect(game.getCurrentSquares().length).toBe(9)
 });

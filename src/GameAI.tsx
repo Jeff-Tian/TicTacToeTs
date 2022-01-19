@@ -76,7 +76,22 @@ export class Game extends React.Component {
     }
 
     simulateOClick() {
-    
+        const [square] = this.getAvailableSquares()
+        if (square) {
+            return
+        }
+
+
+    }
+
+    getCurrentSquares() {
+        const history = this.state.history.slice(0, this.state.stepNumber + 1);
+        const current = history[history.length - 1];
+        return current.squares.slice();
+    }
+
+    getAvailableSquares() {
+        return this.getCurrentSquares().filter(q => !q)
     }
 
     jumpTo(step) {
