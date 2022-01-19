@@ -55,7 +55,7 @@ export class Game extends React.Component {
         };
     }
 
-    handleXClick(i) {
+    handleXClick(i, callback = undefined) {
         console.log('clicking ', i, '...');
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
@@ -72,16 +72,17 @@ export class Game extends React.Component {
             ]),
             stepNumber: history.length,
             xIsNext: !this.state.xIsNext
-        });
+        }, callback);
     }
 
     simulateOClick() {
-        const [square] = this.getAvailableSquares()
-        if (square) {
+        const [firstAvailableSquareIndex] = this.getAvailableSquareIndices()
+        if (firstAvailableSquareIndex === null) {
+            console.error(`玩家 O 尝试在位置 ${firstAvailableSquareIndex} 走子，但是已经没有空余的格子了！`)
             return
         }
 
-
+        this.handleXClick(firstAvailableSquareIndex)
     }
 
     getCurrentSquares() {
@@ -137,8 +138,7 @@ export class Game extends React.Component {
                     <Board
                         squares={current.squares}
                         onClick={i => {
-                            this.handleXClick(i);
-                            this.simulateOClick();
+                            this.handleXClick(i, this.simulateOClick);
                         }}
                     />
                 </div>

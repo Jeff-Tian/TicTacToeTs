@@ -6,8 +6,8 @@ export default defineConfig({
   plugins: [reactRefresh()],
   server: {
     host: '0.0.0.0',
-    hmr: {
-      port: 443,
-    }
+    // hmr: {
+    //   port: 443,
+    // }
   }
 })
