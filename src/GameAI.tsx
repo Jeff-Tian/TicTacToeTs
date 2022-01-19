@@ -94,6 +94,13 @@ export class Game extends React.Component {
         return this.getCurrentSquares().filter(q => !q)
     }
 
+    getAvailableSquareIndices() {
+        return this.getCurrentSquares().map((q, i) => ({
+            index: i,
+            available: !q
+        })).filter(q => q.available).map(q => q.index)
+    }
+
     jumpTo(step) {
         this.setState({
             stepNumber: step,
