@@ -336,7 +336,7 @@ export class StrategySettings {
     }
 }
 
-export default class Strategy {
+class Strategy {
     static getInitialWeights() {
         return initialWeights;
     }
