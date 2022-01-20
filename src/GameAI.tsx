@@ -57,6 +57,9 @@ export class Game extends React.Component {
 
     handleXClick(i, callback = undefined) {
         console.log('clicking ', i, '...');
+        if (i === undefined) {
+            return
+        }
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
@@ -76,7 +79,8 @@ export class Game extends React.Component {
     }
 
     simulateOClick() {
-        const [firstAvailableSquareIndex] = this.getAvailableSquareIndices()
+        // const [firstAvailableSquareIndex] = this.getAvailableSquareIndices()
+        const firstAvailableSquareIndex = new AI().nextMove(convertsSquaresToBitmap(this.getCurrentSquares()))
         if (firstAvailableSquareIndex === null) {
             console.error(`玩家 O 尝试在位置 ${firstAvailableSquareIndex} 走子，但是已经没有空余的格子了！`)
             return
@@ -173,7 +177,7 @@ function calculateWinner(squares) {
 
 let latestFactors = null;
 
-class AI {
+export class AI {
     constructor() {
         this.weights = Object.assign([], Strategy.getInitialWeights());
         this.setWeightsUpdatedCallback(function () {
@@ -197,8 +201,12 @@ class AI {
             });
         }
 
+        console.log('scores = ', scores);
         let index = ArrayHelper.findIndexOfMax(scores);
-        latestFactors = scores[index].namedFactors;
+        console.log('index = ', index, scores[index]);
+        console.log('spot = ', spots, spots[index])
+
+        latestFactors = scores[index]?.namedFactors;
 
         return spots[index];
     }
@@ -483,6 +491,18 @@ export const GlobalSettings = {
     ...defaultSettings
 };
 
+StrategySettings.setInitialWeights([0, -2, -1, 1, 1.5, -1]);
+StrategySettings.setNamedStrategy((factors) => {
+    return {
+        const: factors[0],
+        danger: factors[1],
+        intersectedBads: factors[2],
+        chance: factors[3],
+        occupyCenter: factors[4],
+        numberOfBadsOfMyChance: factors[5]
+    };
+})
+
 const Judger = {
     getBoardScore: function (bitmap, weights) {
         weights = weights || Strategy.getInitialWeights();
@@ -576,3 +596,5 @@ const Judger = {
         return progress.fair || progress.win || progress.lost;
     }
 }
+
+export const convertsSquaresToBitmap = (squares: Array<string | null>) => squares.map(q => q === 'X' ? -1 : (q === 'O' ? 1 : 0))
